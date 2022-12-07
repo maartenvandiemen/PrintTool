@@ -8,6 +8,7 @@ variables:
   DOTNET_NOLOGO: true
   #Specifies whether to generate an ASP.NET Core certificate.
   DOTNET_GENERATE_ASPNET_CERTIFICATE: false
+  NUGET_PACKAGES: $(Pipeline.Workspace)/packages
 
 appendCommitMessageToRunName: false
 
