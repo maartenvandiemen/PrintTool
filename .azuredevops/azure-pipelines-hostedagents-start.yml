@@ -1,0 +1,127 @@
+trigger:
+- main
+
+variables:
+  dotNetVersion: '6.0.x'
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+  #Specifies whether .NET welcome and telemetry messages are displayed on the first run.
+  DOTNET_NOLOGO: true
+  #Specifies whether to generate an ASP.NET Core certificate.
+  DOTNET_GENERATE_ASPNET_CERTIFICATE: false
+
+appendCommitMessageToRunName: false
+
+stages:
+- stage: Build_Windows
+  dependsOn: []
+  jobs:
+  - job: Job
+    pool:
+      vmImage: windows-latest
+    steps:
+    - task: UseDotNet@2
+      inputs:
+        version: $(dotNetVersion)
+        includePreviewVersions: false
+    - task: DotNetCoreCLI@2
+      inputs:
+        command: 'restore'
+        projects: '**/*.csproj'
+        restoreArguments: '--locked-mode'
+        feedsToUse: 'config'
+        nugetConfigPath: '$(Build.SourcesDirectory)/NuGet.config'
+        restoreDirectory: '$(Pipeline.Workspace)/packages'
+        verbosityRestore: 'Quiet'
+    - task: DotNetCoreCLI@2
+      inputs:
+        command: 'build'
+        projects: '**/*.csproj'
+        arguments: '--source $(Pipeline.Workspace)/packages --no-restore -c Release -a x64'    
+    - task: DotNetCoreCLI@2
+      inputs:
+        command: 'publish'
+        publishWebProjects: false
+        projects: '**/PrintTool.csproj'
+        arguments: '-a x64 --output $(Build.ArtifactStagingDirectory) --no-restore -c Release --self-contained -p:PublishSingleFile=true -p:PublishTrimmed=true'
+        zipAfterPublish: false
+        modifyOutputPath: false
+    - task: PublishPipelineArtifact@1
+      inputs:
+        targetPath: '$(Build.ArtifactStagingDirectory)'
+        artifactName: 'PrintToolWindows'
+- stage: Build_Linux
+  dependsOn: []
+  jobs:
+  - job: Job
+    pool:
+      vmImage: ubuntu-latest
+    steps:
+    - task: UseDotNet@2
+      inputs:
+        version: $(dotNetVersion)
+        includePreviewVersions: false
+    - task: DotNetCoreCLI@2
+      inputs:
+        command: 'restore'
+        projects: '**/*.csproj'
+        restoreArguments: '--locked-mode'
+        feedsToUse: 'config'
+        nugetConfigPath: '$(Build.SourcesDirectory)/NuGet.config'
+        restoreDirectory: '$(Pipeline.Workspace)/packages'
+        verbosityRestore: 'Quiet'
+    - task: DotNetCoreCLI@2
+      inputs:
+        command: 'build'
+        projects: '**/*.csproj'
+        arguments: '--source $(Pipeline.Workspace)/packages --no-restore -c Release -a x64'
+    - task: DotNetCoreCLI@2
+      inputs:
+        command: 'publish'
+        publishWebProjects: false
+        projects: '**/PrintTool.csproj'
+        arguments: '-a x64 -p:PublishSingleFile=true -p:PublishTrimmed=true --self-contained true --output $(Build.ArtifactStagingDirectory) --no-restore --source $(Pipeline.Workspace)/packages -c Release'
+        zipAfterPublish: false
+        modifyOutputPath: false
+    - task: PublishPipelineArtifact@1
+      inputs:
+        targetPath: '$(Build.ArtifactStagingDirectory)'
+        artifactName: 'PrintToolLinux'
+- stage: Deploy_Windows
+  dependsOn: [Build_Windows]
+  variables:
+    PrintWindows1: "HI Windows"
+    PrintWindows2: "Test"
+  jobs:
+  - deployment:
+    pool:
+      vmImage: windows-latest
+    environment: printtool-windows
+    strategy:
+      runOnce:
+        deploy:
+         steps:
+            - task: CmdLine@2
+              inputs:
+                script: |
+                  $(Pipeline.Workspace)/PrintToolWindows/PrintTool.exe $(PrintWindows1) "test" $(PrintWindows2)
+- stage: Deploy_Linux
+  dependsOn: [Build_Linux]
+  variables:
+    PrintLinux: "HI Linux"
+  jobs:
+  - deployment:
+    pool:
+      vmImage: ubuntu-latest
+    environment: printtool-linux
+    strategy:
+      runOnce:
+        deploy:
+         steps:
+            - task: CmdLine@2
+              inputs:
+                script: | 
+                  chmod 777 $(Pipeline.Workspace)/PrintToolLinux/PrintTool
+            - task: CmdLine@2
+              inputs:
+                script: | 
+                  $(Pipeline.Workspace)/PrintToolLinux/PrintTool $(PrintLinux)

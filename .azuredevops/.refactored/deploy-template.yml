@@ -1,0 +1,45 @@
+parameters:
+- name: stage_name
+  type: string
+- name: pool
+  type: string
+- name: solutionName
+  type: string
+- name: dependsOn
+  type: object
+  default: []
+- name: preDeploymentSteps
+  type: stepList
+  default: []
+- name: deploymentArguments
+  type: string
+- name: deployableExtension
+  type: string
+  default: ''
+- name: pipelineResource
+  type: object
+
+stages:
+- stage: Deploy_${{parameters.stage_name}}
+  ${{ if parameters.dependsOn }}:
+    dependsOn: ${{parameters.DependsOn}}
+  variables:
+  - template: variables/deploy-${{parameters.stage_name}}.yml
+  jobs:
+  - deployment:
+    pool:
+      vmImage: ${{parameters.pool}}
+    environment: ${{parameters.solutionName}}-${{parameters.stage_name}}
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+            - download: ${{parameters.pipelineResource}}
+              artifact: ${{parameters.solutionName}}-${{parameters.stage_name}}
+            - ${{ each step in parameters.preDeploymentSteps }}:
+              - ${{ step }}
+            - task: CmdLine@2
+              displayName: Execute ${{parameters.solutionName}}
+              inputs:
+                script: | 
+                    $(Pipeline.Workspace)/${{parameters.pipelineResource}}/${{parameters.solutionName}}-${{parameters.stage_name}}/${{parameters.solutionName}}${{parameters.deployableExtension}} ${{parameters.deploymentArguments}}

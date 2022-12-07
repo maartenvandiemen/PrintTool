@@ -1,0 +1,44 @@
+trigger:
+- main
+
+parameters:
+  - name: SkipLinux
+    default: false
+    type: boolean
+    displayName: Skip Linux
+
+variables:
+  - name: DOTNET_SKIP_FIRST_TIME_EXPERIENCE
+    value: true
+    readonly: true
+  - name: DOTNET_LOGO
+    value: true
+    readonly: true
+  - name: DOTNET_GENERATE_ASPNET_CERTIFICATE
+    value: false
+    readonly: true
+  - name: NUGET_PACKAGES
+    value: '$(Pipeline.Workspace)/.nuget/packages/'
+    readonly: true
+  - template: variables/build.yml
+
+appendCommitMessageToRunName: false
+
+jobs:
+- job: Build
+  strategy:
+    matrix:
+      ${{ if eq(parameters.SkipLinux, false) }}:
+        linux:
+          os: "linux"
+          vmImage: "ubuntu-latest"
+      windows:
+        os: "win"
+        vmImage: "windows-latest"
+  pool:
+    vmImage: $(vmImage)
+  steps:
+  - template: build-template.yml
+    parameters:
+      projectToPublish: '**/PrintTool.csproj'
+      artifactname: PrintTool-$(os)

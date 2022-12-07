@@ -1,0 +1,7 @@
+variables:
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+  #Specifies whether .NET welcome and telemetry messages are displayed on the first run.
+  DOTNET_NOLOGO: true
+  #Specifies whether to generate an ASP.NET Core certificate.
+  DOTNET_GENERATE_ASPNET_CERTIFICATE: false
+  NUGET_PACKAGES: '$(Pipeline.Workspace)/.nuget/packages/'

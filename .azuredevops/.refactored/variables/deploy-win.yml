@@ -1,0 +1,4 @@
+variables:
+  PrintWindows1: "HI Windows"
+  PrintWindows2: "Test"
+  PrintWindows3: "Another one!"

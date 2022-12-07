@@ -1,0 +1,31 @@
+trigger: none
+
+resources:
+  pipelines:
+  - pipeline: PrintTool_Refactored
+    source: PrintTool.Refactored
+    trigger: true
+
+stages:
+- template: deploy-template.yml
+  parameters:
+    pipelineResource: PrintTool_Refactored
+    stage_name: win
+    pool: windows-latest
+    solutionName: PrintTool
+    deploymentArguments: '$(PrintWindows1) "test" $(PrintWindows2) $(PrintWindows3)'
+    deployableExtension: '.exe'
+
+- template: deploy-template.yml
+  parameters:
+    stage_name: linux
+    pool: ubuntu-latest
+    pipelineResource: PrintTool_Refactored
+    solutionName: PrintTool
+    deploymentArguments: '$(PrintLinux)'
+    preDeploymentSteps: 
+      - task: CmdLine@2
+        displayName: 'Set permissions'
+        inputs:
+          script: | 
+              chmod 777 $(Pipeline.Workspace)/PrintTool_Refactored/PrintTool-linux/PrintTool
