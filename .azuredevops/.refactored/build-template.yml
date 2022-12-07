@@ -49,7 +49,6 @@ steps:
       restoreArguments: '--locked-mode'
       feedsToUse: 'config'
       nugetConfigPath: '$(Build.SourcesDirectory)/NuGet.config'
-      restoreDirectory: '$(Pipeline.Workspace)/packages'
       verbosityRestore: 'Quiet'
   - task: DotNetCoreCLI@2
     displayName: Dotnet build
