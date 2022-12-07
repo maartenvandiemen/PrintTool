@@ -33,7 +33,7 @@ jobs:
     - run: dotnet publish ${{github.workspace}}/PrintTool/PrintTool.csproj -a x64 --output ${{github.workspace}}/artifacts/PrintTool${{matrix.target}} --no-restore -c Release --self-contained -p:PublishSingleFile=true -p:PublishTrimmed=true
     - uses: actions/upload-artifact@v3
       with:
-        name: PrintToolWindows
+        name: PrintTool${{matrix.target}}
         path: '${{github.workspace}}/artifacts/PrintTool${{matrix.target}}'  
   deploy_windows:
     runs-on: windows-latest
