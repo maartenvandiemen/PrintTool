@@ -1,5 +1,7 @@
 name: Build Printtool refactored
 on: 
+  schedule:
+    - cron:  '0 0 * * 3'
   push:
   workflow_dispatch:
 
