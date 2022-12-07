@@ -1,4 +1,4 @@
-name: Build Printtool
+name: Build Printtool refactored
 on: 
   push:
   workflow_dispatch:
