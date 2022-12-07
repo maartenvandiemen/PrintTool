@@ -30,7 +30,7 @@ jobs:
         name: PrintToolWindows
         path: '${{github.workspace}}/artifacts/PrintToolWindows'
   build_linux:
-    runs-on: linux-latest
+    runs-on: ubuntu-latest
     steps:  
     - uses: actions/checkout@v3    
     - uses: actions/setup-dotnet@v3
