@@ -1,0 +1,23 @@
+name: Build Printtool
+on: 
+  push:
+  workflow_dispatch:
+
+defaults:
+  run:
+    shell: pwsh
+jobs:
+  build_windows:
+    runs-on: ubuntu-latest
+    env:
+      NUGET_PACKAGES: '${{github.workspace}}/.nuget/packages'
+    steps:  
+    - uses: actions/checkout@v3    
+    - uses: actions/setup-dotnet@v3
+    - run: dotnet restore --locked-mode
+    - run: dotnet build --no-restore -c Release -a x64
+    - run: dotnet publish ${{github.workspace}}/PrintTool/PrintTool.csproj -a x64 --output ${{github.workspace}}/artifacts/PrintToolWindows --no-restore -c Release --self-contained -p:PublishSingleFile=true -p:PublishTrimmed=true
+    - uses: actions/upload-artifact@v3
+      with:
+        name: PrintToolWindows
+        path: '${{github.workspace}}/artifacts/PrintToolWindows'
