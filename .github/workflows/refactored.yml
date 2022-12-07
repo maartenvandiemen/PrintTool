@@ -1,0 +1,58 @@
+name: Build Printtool
+on: 
+  push:
+  workflow_dispatch:
+
+env:
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+  #Specifies whether .NET welcome and telemetry messages are displayed on the first run.
+  DOTNET_NOLOGO: true
+  #Specifies whether to generate an ASP.NET Core certificate.
+  DOTNET_GENERATE_ASPNET_CERTIFICATE: false
+  NUGET_PACKAGES: '${{github.workspace}}/.nuget/packages'
+
+defaults:
+  run:
+    shell: pwsh
+jobs:
+  build:
+    runs-on: ${{matrix.os}}
+    strategy:
+      matrix:
+        include:
+          - os: "windows-latest"
+            target: "Windows"
+          - os: "ubuntu-latest"
+            target: "Linux"
+    steps:  
+    - uses: actions/checkout@v3    
+    - uses: actions/setup-dotnet@v3
+    - run: dotnet restore --locked-mode
+    - run: dotnet build ${{github.workspace}}/PrintTool/PrintTool.csproj --no-restore -c Release -a x64
+    - run: dotnet build ${{github.workspace}}/PrintTool.UnitTests/PrintTool.UnitTests.csproj --no-restore -c Release -a x64
+    - run: dotnet publish ${{github.workspace}}/PrintTool/PrintTool.csproj -a x64 --output ${{github.workspace}}/artifacts/PrintTool${{matrix.target}} --no-restore -c Release --self-contained -p:PublishSingleFile=true -p:PublishTrimmed=true
+    - uses: actions/upload-artifact@v3
+      with:
+        name: PrintToolWindows
+        path: '${{github.workspace}}/artifacts/PrintTool${{matrix.target}}'  
+  deploy_windows:
+    runs-on: windows-latest
+    needs: [build]
+    environment: printool_windows
+    steps:
+      - uses: actions/download-artifact@v3
+        with:
+          name: PrintToolWindows
+          path: ${{github.workspace}}/artifacts
+      - run: ${{github.workspace}}/artifacts/PrintTool.exe "Hello" "world" "windows"
+  deploy_linux:
+    runs-on: ubuntu-latest
+    needs: [build]
+    environment: printool_linux
+    steps:
+      - uses: actions/download-artifact@v3
+        with:
+          name: PrintToolLinux
+          path: ${{github.workspace}}/artifacts
+      - run: chmod 777 ${{github.workspace}}/artifacts/PrintTool
+      - run: ${{github.workspace}}/artifacts/PrintTool "Hello" "world" "linux"
