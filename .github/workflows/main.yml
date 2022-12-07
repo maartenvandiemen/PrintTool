@@ -61,4 +61,4 @@ jobs:
           name: PrintToolLinux
           path: ${{github.workspace}}/artifacts
       - run: chmod 777 ${{github.workspace}}/artifacts/PrintTool
-      - run: ${{github.workspace}}/artifacts/PrintTool.exe "Hello" "world" "linux"
+      - run: ${{github.workspace}}/artifacts/PrintTool "Hello" "world" "linux"
