@@ -5,16 +5,6 @@
 	"image": "mcr.microsoft.com/devcontainers/dotnet:0-7.0",
 	"features": {
 		"ghcr.io/devcontainers/features/dotnet:1": {}
-	},
-	// Configure tool-specific properties.
-	"customizations": {
-		// Configure properties specific to VS Code.
-		"vscode": {	
-		// Add the IDs of extensions you want installed when the container is created.
-			"extensions": [
-				"ms-dotnettools.csharp"
-			]
-		}
 	}
 
 	// Features to add to the dev container. More info: https://containers.dev/features.
