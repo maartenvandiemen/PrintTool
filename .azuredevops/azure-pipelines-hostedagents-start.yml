@@ -2,7 +2,7 @@ trigger:
 - main
 
 variables:
-  dotNetVersion: '6.0.x'
+  dotNetVersion: '7.0.x'
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
   #Specifies whether .NET welcome and telemetry messages are displayed on the first run.
   DOTNET_NOLOGO: true
