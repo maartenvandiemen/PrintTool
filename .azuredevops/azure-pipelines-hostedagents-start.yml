@@ -1,5 +1,5 @@
 trigger:
-- main
+- '*'
 
 variables:
   dotNetVersion: '6.0.x'
