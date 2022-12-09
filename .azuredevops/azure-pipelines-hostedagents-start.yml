@@ -31,6 +31,7 @@ stages:
         restoreArguments: '--locked-mode'
         feedsToUse: 'config'
         nugetConfigPath: '$(Build.SourcesDirectory)/NuGet.config'
+        restoreDirectory: '$(NUGET_PACKAGES)'
         verbosityRestore: 'Quiet'
     - task: DotNetCoreCLI@2
       inputs:
