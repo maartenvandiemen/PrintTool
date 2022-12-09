@@ -17,7 +17,7 @@ parameters:
 
 steps:
   - powershell: Write-Host "##vso[task.setvariable variable=NUGET_PACKAGES;]$(Pipeline.Workspace)/packages"
-    displayname: set NUGET_PACKAGES env variable if not set already
+    displayName: set NUGET_PACKAGES env variable if not set already
     condition: ne(variables['NUGET_PACKAGES'], '')
   - script: echo $(NUGET_PACKAGES)
   - task: PowerShell@2
