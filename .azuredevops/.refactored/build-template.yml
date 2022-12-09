@@ -17,6 +17,7 @@ parameters:
 
 steps:
   - powershell: Write-Host "##vso[task.setvariable variable=NUGET_PACKAGES;]$(Pipeline.Workspace)/packages"
+    displayname: set NUGET_PACKAGES env variable if not set already
     condition: ne(variables['NUGET_PACKAGES'], '')
   - script: echo $(NUGET_PACKAGES)
   - task: PowerShell@2
@@ -63,16 +64,12 @@ steps:
         arguments: '--no-restore -c Release -a x64'
       ${{ else }}:
         arguments: '-c Release -a x64'
-    env:
-      NUGET_PACKAGES: $(NUGET_PACKAGES)
   - task: DotNetCoreCLI@2
     displayName: Dotnet test
     inputs:
       command: 'test'
       projects: '**/*Tests.csproj'
       arguments: '--no-build --arch x64 -c Release --collect:"XPlat Code Coverage"'
-    env:
-      NUGET_PACKAGES: $(NUGET_PACKAGES)
   - task: PublishCodeCoverageResults@1
     inputs:
       codeCoverageTool: 'Cobertura'
