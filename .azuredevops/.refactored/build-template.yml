@@ -56,14 +56,19 @@ steps:
       restoreDirectory: '$(NUGET_PACKAGES)'
       verbosityRestore: 'Quiet'
   - task: DotNetCoreCLI@2
-    displayName: Dotnet build
+    displayName: Dotnet build pipeline cache not restored
+    condition: eq(variables.CACHE_RESTORED, true)
     inputs:
       command: 'build'
       projects: '**/*.csproj'
-      ${{ if eq(variables.CACHE_RESTORED, true) }}:
-        arguments: '--no-restore -c Release -a x64'
-      ${{ else }}:
-        arguments: '-c Release -a x64'
+      arguments: '-c Release -a x64'
+  - task: DotNetCoreCLI@2
+    displayName: Dotnet build pipeline cache restored
+    condition: ne(variables.CACHE_RESTORED, true)
+    inputs:
+      command: 'build'
+      projects: '**/*.csproj'
+      arguments: '--no-restore -c Release -a x64'
   - task: DotNetCoreCLI@2
     displayName: Dotnet test
     inputs:
