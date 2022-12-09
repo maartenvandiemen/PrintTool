@@ -63,12 +63,16 @@ steps:
         arguments: '--no-restore -c Release -a x64'
       ${{ else }}:
         arguments: '-c Release -a x64'
+    env:
+      NUGET_PACKAGES: $(NUGET_PACKAGES)
   - task: DotNetCoreCLI@2
     displayName: Dotnet test
     inputs:
       command: 'test'
       projects: '**/*Tests.csproj'
       arguments: '--no-build --arch x64 -c Release --collect:"XPlat Code Coverage"'
+    env:
+      NUGET_PACKAGES: $(NUGET_PACKAGES)
   - task: PublishCodeCoverageResults@1
     inputs:
       codeCoverageTool: 'Cobertura'
