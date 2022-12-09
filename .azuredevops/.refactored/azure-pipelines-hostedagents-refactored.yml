@@ -17,9 +17,6 @@ variables:
   - name: DOTNET_GENERATE_ASPNET_CERTIFICATE
     value: false
     readonly: true
-  - name: NUGET_PACKAGES
-    value: '$(Pipeline.Workspace)/.nuget/packages/'
-    readonly: true
   - template: variables/build.yml
 
 appendCommitMessageToRunName: false
