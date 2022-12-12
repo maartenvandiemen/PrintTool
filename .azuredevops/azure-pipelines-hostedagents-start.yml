@@ -1,6 +1,13 @@
 trigger:
 - main
 
+schedules:
+- cron: "0 0 * * 3"
+  always: true
+  branches:
+    include:
+    - main
+
 variables:
   dotNetVersion: '7.0.x'
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
