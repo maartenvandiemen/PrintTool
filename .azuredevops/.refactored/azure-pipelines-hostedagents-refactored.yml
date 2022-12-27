@@ -1,6 +1,13 @@
 trigger:
 - main
 
+schedules:
+- cron: "0 0 * * 3"
+  always: true
+  branches:
+    include:
+    - main
+
 parameters:
   - name: SkipLinux
     default: false
@@ -16,9 +23,6 @@ variables:
     readonly: true
   - name: DOTNET_GENERATE_ASPNET_CERTIFICATE
     value: false
-    readonly: true
-  - name: NUGET_PACKAGES
-    value: '$(Pipeline.Workspace)/.nuget/packages/'
     readonly: true
   - template: variables/build.yml
 

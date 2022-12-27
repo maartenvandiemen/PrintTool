@@ -13,9 +13,13 @@ parameters:
   default: 'drop'
 - name: dotNetVersion
   type: string
-  default: '6.0.x'
+  default: '7.0.x'
 
 steps:
+  - powershell: Write-Host "##vso[task.setvariable variable=NUGET_PACKAGES;]$(Pipeline.Workspace)/packages"
+    displayName: set NUGET_PACKAGES env variable if not set already
+    condition: ne(variables['NUGET_PACKAGES'], '')
+  - script: echo $(NUGET_PACKAGES)
   - task: PowerShell@2
     displayName: Determine dotnet version installed
     inputs:
@@ -49,17 +53,22 @@ steps:
       restoreArguments: '--locked-mode'
       feedsToUse: 'config'
       nugetConfigPath: '$(Build.SourcesDirectory)/NuGet.config'
-      restoreDirectory: '$(Pipeline.Workspace)/packages'
+      restoreDirectory: '$(NUGET_PACKAGES)'
       verbosityRestore: 'Quiet'
   - task: DotNetCoreCLI@2
-    displayName: Dotnet build
+    displayName: Dotnet build - pipeline cache restored
+    condition: eq(variables.CACHE_RESTORED, true)
     inputs:
       command: 'build'
       projects: '**/*.csproj'
-      ${{ if eq(variables.CACHE_RESTORED, true) }}:
-        arguments: '--no-restore -c Release -a x64'
-      ${{ else }}:
-        arguments: '-c Release -a x64'
+      arguments: '-c Release -a x64'
+  - task: DotNetCoreCLI@2
+    displayName: Dotnet build - pipeline cache not restored
+    condition: ne(variables.CACHE_RESTORED, true)
+    inputs:
+      command: 'build'
+      projects: '**/*.csproj'
+      arguments: '--no-restore -c Release -a x64'
   - task: DotNetCoreCLI@2
     displayName: Dotnet test
     inputs:

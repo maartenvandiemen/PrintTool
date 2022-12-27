@@ -1,13 +1,21 @@
 trigger:
 - main
 
+schedules:
+- cron: "0 0 * * 3"
+  always: true
+  branches:
+    include:
+    - main
+
 variables:
-  dotNetVersion: '6.0.x'
+  dotNetVersion: '7.0.x'
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
   #Specifies whether .NET welcome and telemetry messages are displayed on the first run.
   DOTNET_NOLOGO: true
   #Specifies whether to generate an ASP.NET Core certificate.
   DOTNET_GENERATE_ASPNET_CERTIFICATE: false
+  NUGET_PACKAGES: $(Pipeline.Workspace)/packages
 
 appendCommitMessageToRunName: false
 
@@ -30,7 +38,7 @@ stages:
         restoreArguments: '--locked-mode'
         feedsToUse: 'config'
         nugetConfigPath: '$(Build.SourcesDirectory)/NuGet.config'
-        restoreDirectory: '$(Pipeline.Workspace)/packages'
+        restoreDirectory: '$(NUGET_PACKAGES)'
         verbosityRestore: 'Quiet'
     - task: DotNetCoreCLI@2
       inputs:
