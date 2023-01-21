@@ -53,7 +53,7 @@ stages:
         arguments: '-a x64 --output $(Build.ArtifactStagingDirectory) --no-restore -c Release --self-contained -p:PublishSingleFile=true -p:PublishTrimmed=true'
         zipAfterPublish: false
         modifyOutputPath: false
-    - task: PublishPipelineArtifact@1
+    - task: PublishPipelineArtifact@1.199.0
       inputs:
         targetPath: '$(Build.ArtifactStagingDirectory)'
         artifactName: 'PrintToolWindows'
@@ -90,7 +90,7 @@ stages:
         arguments: '-a x64 -p:PublishSingleFile=true -p:PublishTrimmed=true --self-contained true --output $(Build.ArtifactStagingDirectory) --no-restore --source $(Pipeline.Workspace)/packages -c Release'
         zipAfterPublish: false
         modifyOutputPath: false
-    - task: PublishPipelineArtifact@1
+    - task: PublishPipelineArtifact@1.199.0
       inputs:
         targetPath: '$(Build.ArtifactStagingDirectory)'
         artifactName: 'PrintToolLinux'
