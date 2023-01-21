@@ -31,7 +31,7 @@ stages:
       inputs:
         version: $(dotNetVersion)
         includePreviewVersions: false
-    - task: DotNetCoreCLI@2
+    - task: DotNetCoreCLI@2.216.0
       inputs:
         command: 'restore'
         projects: '**/*.csproj'
@@ -40,12 +40,12 @@ stages:
         nugetConfigPath: '$(Build.SourcesDirectory)/NuGet.config'
         restoreDirectory: '$(NUGET_PACKAGES)'
         verbosityRestore: 'Quiet'
-    - task: DotNetCoreCLI@2
+    - task: DotNetCoreCLI@2.216.0
       inputs:
         command: 'build'
         projects: '**/*.csproj'
         arguments: '--source $(Pipeline.Workspace)/packages --no-restore -c Release -a x64'    
-    - task: DotNetCoreCLI@2
+    - task: DotNetCoreCLI@2.216.0
       inputs:
         command: 'publish'
         publishWebProjects: false
@@ -68,7 +68,7 @@ stages:
       inputs:
         version: $(dotNetVersion)
         includePreviewVersions: false
-    - task: DotNetCoreCLI@2
+    - task: DotNetCoreCLI@2.216.0
       inputs:
         command: 'restore'
         projects: '**/*.csproj'
@@ -77,12 +77,12 @@ stages:
         nugetConfigPath: '$(Build.SourcesDirectory)/NuGet.config'
         restoreDirectory: '$(Pipeline.Workspace)/packages'
         verbosityRestore: 'Quiet'
-    - task: DotNetCoreCLI@2
+    - task: DotNetCoreCLI@2.216.0
       inputs:
         command: 'build'
         projects: '**/*.csproj'
         arguments: '--source $(Pipeline.Workspace)/packages --no-restore -c Release -a x64'
-    - task: DotNetCoreCLI@2
+    - task: DotNetCoreCLI@2.216.0
       inputs:
         command: 'publish'
         publishWebProjects: false
