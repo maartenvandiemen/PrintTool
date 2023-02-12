@@ -79,13 +79,13 @@ steps:
     inputs:
       packageType: 'sdk'
       version: '2.1.x'
-      enabled: false
+    enabled: false
   - task: PublishCodeCoverageResults@2
     inputs:
       summaryFileLocation: '$(Agent.TempDirectory)/*/coverage.cobertura.xml'
       pathToSources: $(Build.SourcesDirectory)
       failIfCoverageEmpty: true
-      enabled: false
+    enabled: false
   - task: DotNetCoreCLI@2
     displayName: Dotnet publish
     condition: and(succeeded(), ne('${{ parameters.projectToPublish }}', ''))
