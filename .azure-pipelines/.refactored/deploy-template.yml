@@ -35,7 +35,6 @@ stages:
         deploy:
           steps:
             - download: ${{parameters.pipelineResource}}
-              artifact: ${{parameters.solutionName}}-${{parameters.stage_name}}
             - ${{ each step in parameters.preDeploymentSteps }}:
               - ${{ step }}
             - task: CmdLine@2
