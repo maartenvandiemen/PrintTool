@@ -10,7 +10,7 @@ stages:
 - template: deploy-template.yml
   parameters:
     pipelineResource: PrintTool_Refactored
-    stage_name: win
+    stage_name: windows
     pool: windows-latest
     solutionName: PrintTool
     deploymentArguments: '$(PrintWindows1) "test" $(PrintWindows2) $(PrintWindows3)'
