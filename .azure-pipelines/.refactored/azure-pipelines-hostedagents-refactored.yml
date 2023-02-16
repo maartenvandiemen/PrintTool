@@ -28,7 +28,7 @@ jobs:
           os: "linux"
           vmImage: "ubuntu-latest"
       windows:
-        os: "win"
+        os: "windows"
         vmImage: "windows-latest"
   pool:
     vmImage: $(vmImage)
