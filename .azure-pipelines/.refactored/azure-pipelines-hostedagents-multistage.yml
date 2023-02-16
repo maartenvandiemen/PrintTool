@@ -43,6 +43,7 @@ stages:
 
 - template: deploy-template.yml
   parameters:
+    dependsOn: [Build]
     pipelineResource: current
     stage_name: windows
     pool: windows-latest
@@ -52,6 +53,7 @@ stages:
 
 - template: deploy-template.yml
   parameters:
+    dependsOn: [Build]
     stage_name: linux
     pool: ubuntu-latest
     pipelineResource: current
