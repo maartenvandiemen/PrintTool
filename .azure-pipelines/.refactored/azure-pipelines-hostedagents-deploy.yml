@@ -3,7 +3,7 @@ trigger: none
 resources:
   pipelines:
   - pipeline: PrintTool_Refactored
-    source: PrintTool.Refactored
+    source: Refactored.Build
     trigger: true
 
 stages:
