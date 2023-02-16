@@ -1,0 +1,68 @@
+trigger:
+- main
+
+schedules:
+- cron: "0 0 * * 3"
+  always: true
+  branches:
+    include:
+    - main
+
+parameters:
+  - name: SkipLinux
+    default: false
+    type: boolean
+    displayName: Skip Linux
+
+variables:
+  - template: variables/build.yml
+
+appendCommitMessageToRunName: false
+
+stages:
+- stage: Build
+  dependsOn: []
+  jobs:
+  - job: Build
+    strategy:
+      matrix:
+        ${{ if eq(parameters.SkipLinux, false) }}:
+          linux:
+            os: "linux"
+            vmImage: "ubuntu-latest"
+        windows:
+          os: "windows"
+          vmImage: "windows-latest"
+    pool:
+      vmImage: $(vmImage)
+    steps:
+    - template: build-template.yml
+      parameters:
+        projectToPublish: '**/PrintTool.csproj'
+        artifactname: PrintTool-$(os)
+
+- template: deploy-template.yml
+  parameters:
+    dependsOn: [Build]
+    pipelineResource: current
+    stage_name: windows
+    pool: windows-latest
+    solutionName: PrintTool
+    deploymentArguments: '$(PrintWindows1) "test" $(PrintWindows2) $(PrintWindows3)'
+    deployableExtension: '.exe'
+
+- ${{ if eq(parameters.SkipLinux, false) }}:
+  - template: deploy-template.yml
+    parameters:
+      dependsOn: [Build]
+      stage_name: linux
+      pool: ubuntu-latest
+      pipelineResource: current
+      solutionName: PrintTool
+      deploymentArguments: '$(PrintLinux)'
+      preDeploymentSteps: 
+        - task: CmdLine@2
+          displayName: 'Set permissions'
+          inputs:
+            script: | 
+                chmod 777 $(Pipeline.Workspace)/PrintTool_Refactored/PrintTool-linux/PrintTool

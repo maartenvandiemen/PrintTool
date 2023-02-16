@@ -3,14 +3,14 @@ trigger: none
 resources:
   pipelines:
   - pipeline: PrintTool_Refactored
-    source: PrintTool.Refactored
+    source: Refactored.Build
     trigger: true
 
 stages:
 - template: deploy-template.yml
   parameters:
     pipelineResource: PrintTool_Refactored
-    stage_name: win
+    stage_name: windows
     pool: windows-latest
     solutionName: PrintTool
     deploymentArguments: '$(PrintWindows1) "test" $(PrintWindows2) $(PrintWindows3)'

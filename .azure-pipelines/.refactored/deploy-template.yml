@@ -41,5 +41,7 @@ stages:
             - task: CmdLine@2
               displayName: Execute ${{parameters.solutionName}}
               inputs:
-                script: | 
-                    $(Pipeline.Workspace)/${{parameters.pipelineResource}}/${{parameters.solutionName}}-${{parameters.stage_name}}/${{parameters.solutionName}}${{parameters.deployableExtension}} ${{parameters.deploymentArguments}}
+                ${{ if eq(parameters.pipelineResource, 'current') }}:
+                  script: $(Pipeline.Workspace)/${{parameters.solutionName}}-${{parameters.stage_name}}/${{parameters.solutionName}}${{parameters.deployableExtension}} ${{parameters.deploymentArguments}}
+                ${{ else }}:
+                  script: $(Pipeline.Workspace)/${{parameters.pipelineResource}}/${{parameters.solutionName}}-${{parameters.stage_name}}/${{parameters.solutionName}}${{parameters.deployableExtension}} ${{parameters.deploymentArguments}}

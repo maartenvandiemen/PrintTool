@@ -15,15 +15,6 @@ parameters:
     displayName: Skip Linux
 
 variables:
-  - name: DOTNET_SKIP_FIRST_TIME_EXPERIENCE
-    value: true
-    readonly: true
-  - name: DOTNET_LOGO
-    value: true
-    readonly: true
-  - name: DOTNET_GENERATE_ASPNET_CERTIFICATE
-    value: false
-    readonly: true
   - template: variables/build.yml
 
 appendCommitMessageToRunName: false
