@@ -7,6 +7,7 @@ Improve the pipeline:
 1. Introducing variables, in a seperate file or variable group
    - [Hint](https://learn.microsoft.com/en-us/azure/devops/pipelines/library/variable-groups)
 1. Skip the Linux part by default, but can be configured with variables settable at queue time.
+   - Hint: use [parameters](https://learn.microsoft.com/en-us/azure/devops/pipelines/yaml-schema/parameters)
 1. Add branch policy, add conditions to the pipeline that if a PR triggers the pipeline, the release part must be skipped.
    - [Hint](https://learn.microsoft.com/en-us/azure/devops/pipelines/process/conditions)
 1. By splitting the generic logic for builds to a template
