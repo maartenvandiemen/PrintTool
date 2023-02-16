@@ -65,4 +65,4 @@ stages:
           displayName: 'Set permissions'
           inputs:
             script: | 
-                chmod 777 $(Pipeline.Workspace)/PrintTool_Refactored/PrintTool-linux/PrintTool
+                chmod 777 $(Pipeline.Workspace)/PrintTool-linux/PrintTool
