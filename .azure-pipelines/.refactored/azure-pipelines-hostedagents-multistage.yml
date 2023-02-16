@@ -51,17 +51,18 @@ stages:
     deploymentArguments: '$(PrintWindows1) "test" $(PrintWindows2) $(PrintWindows3)'
     deployableExtension: '.exe'
 
-- template: deploy-template.yml
-  parameters:
-    dependsOn: [Build]
-    stage_name: linux
-    pool: ubuntu-latest
-    pipelineResource: current
-    solutionName: PrintTool
-    deploymentArguments: '$(PrintLinux)'
-    preDeploymentSteps: 
-      - task: CmdLine@2
-        displayName: 'Set permissions'
-        inputs:
-          script: | 
-              chmod 777 $(Pipeline.Workspace)/PrintTool_Refactored/PrintTool-linux/PrintTool
+- ${{ if eq(parameters.SkipLinux, false) }}:
+  - template: deploy-template.yml
+    parameters:
+      dependsOn: [Build]
+      stage_name: linux
+      pool: ubuntu-latest
+      pipelineResource: current
+      solutionName: PrintTool
+      deploymentArguments: '$(PrintLinux)'
+      preDeploymentSteps: 
+        - task: CmdLine@2
+          displayName: 'Set permissions'
+          inputs:
+            script: | 
+                chmod 777 $(Pipeline.Workspace)/PrintTool_Refactored/PrintTool-linux/PrintTool
