@@ -1,6 +1,7 @@
 trigger: none
 
 resources:
+  #Considerations for pipeline resource: https://learn.microsoft.com/en-us/azure/devops/pipelines/process/pipeline-triggers
   pipelines:
   - pipeline: PrintTool_Refactored
     source: Refactored.Build
