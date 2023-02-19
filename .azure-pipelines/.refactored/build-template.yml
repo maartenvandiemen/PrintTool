@@ -25,7 +25,7 @@ steps:
         $globalJsonLocation = Join-Path -Path "$(System.DefaultWorkingDirectory)" -ChildPath "global.json"
         $globalJson = Get-Content $globalJsonLocation -Raw | ConvertFrom-Json 
         $dotnetVersionGlobalJson = $globalJson.sdk.version
-        $match = $installedSdks -like ($dotnetVersionVariable + "*")
+        $match = $installedSdks -like ($dotnetVersionGlobalJson + "*")
         if($match){
           Write-Host "##vso[task.setvariable variable=isDotNetVersionInstalled;]true"
         }
