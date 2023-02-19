@@ -44,8 +44,7 @@ stages:
         command: 'restore'
         projects: '**/*.csproj'
         restoreArguments: '--locked-mode'
-        feedsToUse: 'config'
-        nugetConfigPath: '$(Build.SourcesDirectory)/NuGet.config'
+        feedsToUse: 'select'
         restoreDirectory: '$(NUGET_PACKAGES)'
         verbosityRestore: 'Quiet'
     - task: DotNetCoreCLI@2
@@ -81,8 +80,7 @@ stages:
         command: 'restore'
         projects: '**/*.csproj'
         restoreArguments: '--locked-mode'
-        feedsToUse: 'config'
-        nugetConfigPath: '$(Build.SourcesDirectory)/NuGet.config'
+        feedsToUse: 'select'
         restoreDirectory: '$(Pipeline.Workspace)/packages'
         verbosityRestore: 'Quiet'
     - task: DotNetCoreCLI@2
