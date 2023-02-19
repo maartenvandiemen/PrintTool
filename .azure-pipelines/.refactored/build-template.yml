@@ -16,7 +16,6 @@ steps:
   - powershell: Write-Host "##vso[task.setvariable variable=NUGET_PACKAGES;]$(Pipeline.Workspace)/packages"
     displayName: set NUGET_PACKAGES env variable if not set already
     condition: ne(variables['NUGET_PACKAGES'], '')
-  - script: echo $(NUGET_PACKAGES)
   - task: PowerShell@2
     displayName: Determine dotnet version installed
     inputs:
