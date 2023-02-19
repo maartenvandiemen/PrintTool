@@ -5,14 +5,15 @@ Improve the pipeline:
 1. Add unit tests as part of the build.
    - [Hint](https://learn.microsoft.com/en-us/dotnet/core/tools/dotnet-test)
 1. Introducing variables, in a seperate file or variable group
-   - [Hint-variable group](https://learn.microsoft.com/en-us/azure/devops/pipelines/library/variable-groups)
-   - [Hint-seperate file](https://learn.microsoft.com/en-us/azure/devops/pipelines/yaml-schema/variables-template)
+   - [Hint - variable group](https://learn.microsoft.com/en-us/azure/devops/pipelines/library/variable-groups)
+   - [Hint - seperate file](https://learn.microsoft.com/en-us/azure/devops/pipelines/yaml-schema/variables-template)
 1. Skip the Linux part by default, but can be configured with variables settable at queue time.
    - [Hint](https://learn.microsoft.com/en-us/azure/devops/pipelines/yaml-schema/parameters)
 1. Add branch policy, add conditions to the pipeline that if a PR triggers the pipeline, the release part must be skipped.
    - Hints:
      - [Hint - conditions](https://learn.microsoft.com/en-us/azure/devops/pipelines/process/conditions)
-     - [Hint - configure pull request](https://learn.microsoft.com/en-us/azure/devops/repos/git/branch-policies)
+     - [Hint - configure branch policy](https://learn.microsoft.com/en-us/azure/devops/repos/git/branch-policies)
+     - [Hint - create pull request](https://learn.microsoft.com/en-us/azure/devops/repos/git/pull-requests)
 1. By splitting the generic logic for builds to a template
    - [Hint](https://learn.microsoft.com/en-us/azure/devops/pipelines/process/templates)
 1. And store the template above in a seperate repo
