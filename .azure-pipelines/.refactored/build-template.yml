@@ -45,25 +45,23 @@ steps:
       cacheHitVar: 'CACHE_RESTORED'
   - task: DotNetCoreCLI@2
     displayName: Dotnet restore 
-    condition: ne(variables.CACHE_RESTORED, true)
+    condition: and(succeeded(), ne(variables.CACHE_RESTORED, true))
     inputs:
       command: 'restore'
       projects: '**/*.csproj'
       restoreArguments: '--locked-mode'
-      feedsToUse: 'config'
-      nugetConfigPath: '$(Build.SourcesDirectory)/NuGet.config'
+      feedsToUse: 'select'
       restoreDirectory: '$(NUGET_PACKAGES)'
-      verbosityRestore: 'Quiet'
   - task: DotNetCoreCLI@2
     displayName: Dotnet build - pipeline cache restored
-    condition: eq(variables.CACHE_RESTORED, true)
+    condition: and(succeeded(), eq(variables.CACHE_RESTORED, true))
     inputs:
       command: 'build'
       projects: '**/*.csproj'
       arguments: '-c Release -a x64'
   - task: DotNetCoreCLI@2
     displayName: Dotnet build - pipeline cache not restored
-    condition: ne(variables.CACHE_RESTORED, true)
+    condition: and(succeeded(), ne(variables.CACHE_RESTORED, true))
     inputs:
       command: 'build'
       projects: '**/*.csproj'
