@@ -14,9 +14,6 @@ parameters:
     type: boolean
     displayName: Skip Linux
 
-variables:
-  - template: variables/build.yml
-
 appendCommitMessageToRunName: false
 
 stages:
@@ -33,6 +30,8 @@ stages:
         windows:
           os: "windows"
           vmImage: "windows-latest"
+    variables:
+    - template: variables/build.yml
     pool:
       vmImage: $(vmImage)
     steps:
