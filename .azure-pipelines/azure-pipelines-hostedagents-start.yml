@@ -74,8 +74,8 @@ stages:
     steps:
     - task: UseDotNet@2
       inputs:
-        version: $(dotNetVersion)
-        includePreviewVersions: false
+        packageType: 'sdk'
+        useGlobalJson: true
     - task: DotNetCoreCLI@2
       inputs:
         command: 'restore'
