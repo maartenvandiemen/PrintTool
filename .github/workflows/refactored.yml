@@ -4,9 +4,9 @@ on:
     - cron:  '0 0 * * 3'
   push:
     paths-ignore:
-      - .azure-pipelines
-      - .devcontainer
-      - .vscode
+      - .azure-pipelines/**
+      - .devcontainer/**
+      - .vscode/**
   workflow_dispatch:
 
 env:
