@@ -11,22 +11,20 @@ parameters:
 - name: artifactname
   type: string
   default: 'drop'
-- name: dotNetVersion
-  type: string
-  default: '7.0.x'
 
 steps:
   - powershell: Write-Host "##vso[task.setvariable variable=NUGET_PACKAGES;]$(Pipeline.Workspace)/packages"
     displayName: set NUGET_PACKAGES env variable if not set already
     condition: ne(variables['NUGET_PACKAGES'], '')
-  - script: echo $(NUGET_PACKAGES)
   - task: PowerShell@2
     displayName: Determine dotnet version installed
     inputs:
       targetType: 'inline'
       script: |
         $installedSdks = dotnet --list-sdks
-        $dotnetVersionVariable = '${{parameters.dotNetVersion}}'.Replace('x', '')
+        $globalJsonLocation = Join-Path -Path "$(System.DefaultWorkingDirectory)" -ChildPath "global.json"
+        $globalJson = Get-Content $globalJsonLocation -Raw | ConvertFrom-Json 
+        $dotnetVersionGlobalJson = $globalJson.sdk.version
         $match = $installedSdks -like ($dotnetVersionVariable + "*")
         if($match){
           Write-Host "##vso[task.setvariable variable=isDotNetVersionInstalled;]true"
@@ -36,8 +34,8 @@ steps:
     displayName: Install dotnet version (if required)
     condition: and(succeeded(), ne(variables['isDotNetVersionInstalled'], 'true'))
     inputs:
-      version: '${{parameters.dotNetVersion}}'
-      includePreviewVersions: false 
+      packageType: 'sdk'
+      useGlobalJson: true
   - task: Cache@2
     displayName: 'Restore cache for NuGet'
     inputs:
@@ -46,25 +44,23 @@ steps:
       cacheHitVar: 'CACHE_RESTORED'
   - task: DotNetCoreCLI@2
     displayName: Dotnet restore 
-    condition: ne(variables.CACHE_RESTORED, true)
+    condition: and(succeeded(), ne(variables.CACHE_RESTORED, true))
     inputs:
       command: 'restore'
       projects: '**/*.csproj'
       restoreArguments: '--locked-mode'
-      feedsToUse: 'config'
-      nugetConfigPath: '$(Build.SourcesDirectory)/NuGet.config'
+      feedsToUse: 'select'
       restoreDirectory: '$(NUGET_PACKAGES)'
-      verbosityRestore: 'Quiet'
   - task: DotNetCoreCLI@2
     displayName: Dotnet build - pipeline cache restored
-    condition: eq(variables.CACHE_RESTORED, true)
+    condition: and(succeeded(), eq(variables.CACHE_RESTORED, true))
     inputs:
       command: 'build'
       projects: '**/*.csproj'
       arguments: '-c Release -a x64'
   - task: DotNetCoreCLI@2
     displayName: Dotnet build - pipeline cache not restored
-    condition: ne(variables.CACHE_RESTORED, true)
+    condition: and(succeeded(), ne(variables.CACHE_RESTORED, true))
     inputs:
       command: 'build'
       projects: '**/*.csproj'

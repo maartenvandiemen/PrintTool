@@ -1,5 +1,13 @@
 trigger:
-- main
+  branches:
+    include:
+    - master
+    - main
+  paths:
+    exclude:
+    - .github
+    - .devcontainer
+    - .vscode
 
 schedules:
 - cron: "0 0 * * 3"
@@ -7,15 +15,13 @@ schedules:
   branches:
     include:
     - main
+    - master
 
 parameters:
   - name: SkipLinux
     default: false
     type: boolean
     displayName: Skip Linux
-
-variables:
-  - template: variables/build.yml
 
 appendCommitMessageToRunName: false
 
@@ -33,6 +39,8 @@ stages:
         windows:
           os: "windows"
           vmImage: "windows-latest"
+    variables:
+    - template: variables/build.yml
     pool:
       vmImage: $(vmImage)
     steps:

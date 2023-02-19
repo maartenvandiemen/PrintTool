@@ -1,5 +1,13 @@
 trigger:
-- main
+  branches:
+    include:
+    - master
+    - main
+  paths:
+    exclude:
+    - .github
+    - .devcontainer
+    - .vscode
 
 schedules:
 - cron: "0 0 * * 3"
@@ -7,9 +15,9 @@ schedules:
   branches:
     include:
     - main
+    - master
 
 variables:
-  dotNetVersion: '7.0.x'
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
   #Specifies whether .NET welcome and telemetry messages are displayed on the first run.
   DOTNET_NOLOGO: true
@@ -29,15 +37,14 @@ stages:
     steps:
     - task: UseDotNet@2
       inputs:
-        version: $(dotNetVersion)
-        includePreviewVersions: false
+        packageType: 'sdk'
+        useGlobalJson: true
     - task: DotNetCoreCLI@2
       inputs:
         command: 'restore'
         projects: '**/*.csproj'
         restoreArguments: '--locked-mode'
-        feedsToUse: 'config'
-        nugetConfigPath: '$(Build.SourcesDirectory)/NuGet.config'
+        feedsToUse: 'select'
         restoreDirectory: '$(NUGET_PACKAGES)'
         verbosityRestore: 'Quiet'
     - task: DotNetCoreCLI@2
@@ -66,15 +73,14 @@ stages:
     steps:
     - task: UseDotNet@2
       inputs:
-        version: $(dotNetVersion)
-        includePreviewVersions: false
+        packageType: 'sdk'
+        useGlobalJson: true
     - task: DotNetCoreCLI@2
       inputs:
         command: 'restore'
         projects: '**/*.csproj'
         restoreArguments: '--locked-mode'
-        feedsToUse: 'config'
-        nugetConfigPath: '$(Build.SourcesDirectory)/NuGet.config'
+        feedsToUse: 'select'
         restoreDirectory: '$(Pipeline.Workspace)/packages'
         verbosityRestore: 'Quiet'
     - task: DotNetCoreCLI@2
