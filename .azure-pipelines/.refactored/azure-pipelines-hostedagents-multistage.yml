@@ -49,17 +49,18 @@ stages:
         projectToPublish: '**/PrintTool.csproj'
         artifactname: PrintTool-$(os)
 
-- template: deploy-template.yml
-  parameters:
-    dependsOn: [Build]
-    pipelineResource: current
-    stage_name: windows
-    pool: windows-latest
-    solutionName: PrintTool
-    deploymentArguments: '$(PrintWindows1) "test" $(PrintWindows2) $(PrintWindows3)'
-    deployableExtension: '.exe'
+- ${{ if eq(variables['Build.Reason'], 'PullRequest') }}:
+  - template: deploy-template.yml
+    parameters:
+      dependsOn: [Build]
+      pipelineResource: current
+      stage_name: windows
+      pool: windows-latest
+      solutionName: PrintTool
+      deploymentArguments: '$(PrintWindows1) "test" $(PrintWindows2) $(PrintWindows3)'
+      deployableExtension: '.exe'
 
-- ${{ if eq(parameters.SkipLinux, false) }}:
+- ${{ if or(eq(parameters.SkipLinux, false), eq(variables['Build.Reason'], 'PullRequest')) }}:
   - template: deploy-template.yml
     parameters:
       dependsOn: [Build]
