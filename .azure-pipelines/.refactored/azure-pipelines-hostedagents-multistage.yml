@@ -59,7 +59,7 @@ stages:
     deploymentArguments: '$(PrintWindows1) "test" $(PrintWindows2) $(PrintWindows3)'
     deployableExtension: '.exe'
 
-- ${{ if and(succeeded(), or(eq(parameters.SkipLinux, false), eq(variables['Build.Reason'], 'PullRequest'))) }}:
+- ${{ if or(eq(parameters.SkipLinux, false), eq(variables['Build.Reason'], 'PullRequest')) }}:
   - template: deploy-template.yml
     parameters:
       dependsOn: [Build]
