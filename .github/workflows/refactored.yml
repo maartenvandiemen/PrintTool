@@ -49,6 +49,10 @@ jobs:
       if: ${{env.isDotNetVersionInstalled == 'true'}}
     - run: echo "Nothing!!"
       if: ${{env.isDotNetVersionInstalled == false}}
+    - run: echo "Nothing!!!"
+      if: ${{env.isDotNetVersionInstalled == 'false'}}
+    - run: echo "Nothing!!!"
+      if: ${{env.isDotNetVersionInstalled == "false"}}
     - uses: actions/setup-dotnet@v3
       if: ${{env.isDotNetVersionInstalled == 'false'}}
       with: 
