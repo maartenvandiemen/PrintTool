@@ -44,6 +44,7 @@ jobs:
         else{
           echo "isDotNetVersionInstalled=false" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf8 -Append
         }
+    - run: echo "${{isDotNetVersionInstalled}}"
     - run: echo "Nothing!"
       if: ${{env.isDotNetVersionInstalled == 'true'}}
     - run: echo "Nothing!!"
