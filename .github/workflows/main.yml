@@ -7,6 +7,7 @@ on:
       - .azure-pipelines/**
       - .devcontainer/**
       - .vscode/**
+      - .github/workflows/refactored.yml
   workflow_dispatch:
 
 env:
@@ -26,6 +27,8 @@ jobs:
     steps:  
     - uses: actions/checkout@v3    
     - uses: actions/setup-dotnet@v3
+      with: 
+        global-json-file: global.json
     - run: dotnet restore --locked-mode
     - run: dotnet build ${{github.workspace}}/PrintTool/PrintTool.csproj --no-restore -c Release -a x64
     - run: dotnet build ${{github.workspace}}/PrintTool.UnitTests/PrintTool.UnitTests.csproj --no-restore -c Release -a x64
