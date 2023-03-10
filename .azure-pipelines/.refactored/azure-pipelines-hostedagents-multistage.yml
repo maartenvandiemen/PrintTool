@@ -8,6 +8,7 @@ trigger:
     - .github/**
     - .devcontainer/**
     - .vscode/**
+    - .azure-pipelines/azure-pipelines-hostedagents-start.yml
 
 schedules:
 - cron: "0 0 * * 3"

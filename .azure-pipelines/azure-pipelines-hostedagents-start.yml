@@ -8,6 +8,7 @@ trigger:
     - .github/**
     - .devcontainer/**
     - .vscode/**
+    - .azure-pipelines/.refactored/**
 
 schedules:
 - cron: "0 0 * * 3"
