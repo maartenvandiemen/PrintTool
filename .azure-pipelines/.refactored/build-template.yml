@@ -18,7 +18,7 @@ steps:
     condition: ne(variables['NUGET_PACKAGES'], '')
     
   - task: PowerShell@2
-    displayName: Determine dotnet version installed
+    displayName: 🔦 Determine dotnet version installed
     inputs:
       targetType: 'inline'
       script: |
@@ -33,21 +33,21 @@ steps:
       pwsh: true
       
   - task: UseDotNet@2
-    displayName: Install dotnet version (if required)
+    displayName: 🚧 Install dotnet version (if required)
     condition: and(succeeded(), ne(variables['isDotNetVersionInstalled'], 'true'))
     inputs:
       packageType: 'sdk'
       useGlobalJson: true
       
   - task: Cache@2
-    displayName: 'Restore cache for NuGet'
+    displayName: 🚆 Restore cache for NuGet
     inputs:
       key: 'nuget | $(Agent.OS) | **/packages.lock.json,!**/bin/**,!**/obj/**'
       path: '$(NUGET_PACKAGES)'
       cacheHitVar: 'CACHE_RESTORED'
       
   - task: DotNetCoreCLI@2
-    displayName: Dotnet restore 
+    displayName: ⛽ Dotnet restore 
     inputs:
       command: 'restore'
       projects: '**/*.csproj'
@@ -56,14 +56,14 @@ steps:
       restoreDirectory: '$(NUGET_PACKAGES)'
 
   - task: DotNetCoreCLI@2
-    displayName: Dotnet build - pipeline cache not restored
+    displayName: 🔨 Dotnet build - pipeline cache not restored
     inputs:
       command: 'build'
       projects: '**/*.csproj'
       arguments: '--no-restore -c Release -a x64'
       
   - task: DotNetCoreCLI@2
-    displayName: Dotnet test
+    displayName: 🚦 Dotnet test
     inputs:
       command: 'test'
       projects: '**/*Tests.csproj'
@@ -76,7 +76,7 @@ steps:
       failIfCoverageEmpty: true
       
   - task: DotNetCoreCLI@2
-    displayName: Dotnet publish
+    displayName: 🏁 Dotnet publish
     condition: and(succeeded(), ne('${{ parameters.projectToPublish }}', ''))
     inputs:
       command: 'publish'
