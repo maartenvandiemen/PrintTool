@@ -40,7 +40,4 @@ stages:
             - task: CmdLine@2
               displayName: Execute ${{parameters.solutionName}}
               inputs:
-                ${{ if eq(parameters.pipelineResource, 'current') }}:
-                  script: $(Pipeline.Workspace)/${{parameters.solutionName}}-${{parameters.stage_name}}/${{parameters.solutionName}}${{parameters.deployableExtension}} ${{parameters.deploymentArguments}}
-                ${{ else }}:
-                  script: $(Pipeline.Workspace)/${{parameters.pipelineResource}}/${{parameters.solutionName}}-${{parameters.stage_name}}/${{parameters.solutionName}}${{parameters.deployableExtension}} ${{parameters.deploymentArguments}}
+                script: $(Pipeline.Workspace)/${{parameters.solutionName}}-${{parameters.stage_name}}/${{parameters.solutionName}}${{parameters.deployableExtension}} ${{parameters.deploymentArguments}}
