@@ -53,7 +53,6 @@ stages:
 - template: deploy-template.yml
   parameters:
     dependsOn: [Build]
-    pipelineResource: current
     stage_name: windows
     pool: windows-latest
     solutionName: PrintTool
@@ -66,7 +65,6 @@ stages:
       dependsOn: [Build]
       stage_name: linux
       pool: ubuntu-latest
-      pipelineResource: current
       solutionName: PrintTool
       deploymentArguments: '$(PrintLinux)'
       preDeploymentSteps: 
