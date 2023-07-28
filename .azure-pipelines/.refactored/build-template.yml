@@ -14,7 +14,7 @@ parameters:
 
 steps:
   - powershell: Write-Host "##vso[task.setvariable variable=NUGET_PACKAGES;]$(Pipeline.Workspace)/packages"
-    displayName: set NUGET_PACKAGES env variable if not set already
+    displayName: ✒️ set NUGET_PACKAGES env variable if not set already
     condition: ne(variables['NUGET_PACKAGES'], '')
     
   - task: PowerShell@2
@@ -86,7 +86,7 @@ steps:
       zipAfterPublish: false
       modifyOutputPath: false
       
-  - task: PublishPipelineArtifact@1
+  - task: 📤 PublishPipelineArtifact@1
     inputs:
       targetPath: '$(Build.ArtifactStagingDirectory)'
       artifactName: ${{ parameters.artifactname}}
