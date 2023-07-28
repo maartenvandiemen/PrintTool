@@ -16,8 +16,6 @@ parameters:
 - name: deployableExtension
   type: string
   default: ''
-- name: pipelineResource
-  type: object
 
 stages:
 - stage: Deploy_${{parameters.stage_name}}
@@ -34,7 +32,6 @@ stages:
       runOnce:
         deploy:
           steps:
-            - download: ${{parameters.pipelineResource}}
             - ${{ each step in parameters.preDeploymentSteps }}:
               - ${{ step }}
             - task: CmdLine@2
