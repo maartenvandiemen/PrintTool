@@ -67,14 +67,14 @@ steps:
       command: 'test'
       projects: '**/*Tests.csproj'
       arguments: '--no-build --arch x64 -c Release --collect:"XPlat Code Coverage"'
-      
-  - task: PublishCodeCoverageResults@1
+  
+  - task: PublishCodeCoverageResults@2
     displayName: 🤘 Publish code coverage
     inputs:
-      codeCoverageTool: 'Cobertura'
       summaryFileLocation: '$(Agent.TempDirectory)/*/coverage.cobertura.xml'
+      pathToSources: '$(Build.SourcesDirectory)'
       failIfCoverageEmpty: true
-      
+
   - task: DotNetCoreCLI@2
     displayName: 🏁 Dotnet publish
     condition: and(succeeded(), ne('${{ parameters.projectToPublish }}', ''))
