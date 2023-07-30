@@ -44,6 +44,7 @@ steps:
     inputs:
       key: 'nuget | $(Agent.OS) | **/packages.lock.json,!**/bin/**,!**/obj/**'
       path: '$(NUGET_PACKAGES)'
+      cacheHitVar: 'CACHE_RESTORED'
       
   - task: DotNetCoreCLI@2
     displayName: ⛽ Dotnet restore - cache
