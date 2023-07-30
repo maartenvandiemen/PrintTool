@@ -55,13 +55,23 @@ steps:
       restoreArguments: '--locked-mode'
       feedsToUse: 'select'
       restoreDirectory: '$(NUGET_PACKAGES)'
-
+      
+  #In order to have a project.assests.json a build is required.
   - task: DotNetCoreCLI@2
-    displayName: 🔨 Dotnet build
+    displayName: 🔨 Dotnet build - pipeline cache restored
+    condition: and(succeeded(), eq(variables.CACHE_RESTORED, true))
     inputs:
       command: 'build'
       projects: '**/*.csproj'
-      arguments: '--no-restore -c Release -a x64 --no-incremental'
+      arguments: '-c Release -a x64'
+      
+  - task: DotNetCoreCLI@2
+    displayName: 🔨 Dotnet build - pipeline cache not restored
+    condition: and(succeeded(), eq(variables.CACHE_RESTORED, false))
+    inputs:
+      command: 'build'
+      projects: '**/*.csproj'
+      arguments: '--no-restore -c Release -a x64'
       
   - task: DotNetCoreCLI@2
     displayName: 🚦 Dotnet test
