@@ -2,12 +2,14 @@
 Improve the pipeline:
 1. Give more readable names to the steps. So it's more clear what's happening in the build.
    - Hint: use displayname
+1. Run the Windows part on your own machine.
+   - [Hint](https://learn.microsoft.com/en-us/training/modules/host-build-agent) 
 1. Add unit tests as part of the build.
    - [Hint](https://learn.microsoft.com/en-us/dotnet/core/tools/dotnet-test)
 1. Introducing variables, in a seperate file or variable group
    - [Hint: variable group](https://learn.microsoft.com/en-us/azure/devops/pipelines/library/variable-groups)
    - [Hint: seperate file](https://learn.microsoft.com/en-us/azure/devops/pipelines/yaml-schema/variables-template)
-1. Skip the Linux part by default, but can be configured with variables settable at queue time.
+1. Skip the Linux part by default, but can be changed each time when starting a new pipeline.
    - [Hint](https://learn.microsoft.com/en-us/azure/devops/pipelines/yaml-schema/parameters)
 1. Add branch policy, add conditions to the pipeline that if a PR triggers the pipeline, the release part must be skipped.
    - [Hint: conditions](https://learn.microsoft.com/en-us/azure/devops/pipelines/process/conditions)
