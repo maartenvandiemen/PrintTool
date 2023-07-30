@@ -61,7 +61,7 @@ steps:
     inputs:
       command: 'build'
       projects: '**/*.csproj'
-      arguments: '--no-restore -c Release -a x64 --force'
+      arguments: '--no-restore -c Release -a x64 --no-incremental'
       
   - task: DotNetCoreCLI@2
     displayName: 🚦 Dotnet test
