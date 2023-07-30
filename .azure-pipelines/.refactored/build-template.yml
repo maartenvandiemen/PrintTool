@@ -41,14 +41,13 @@ steps:
       
   - task: Cache@2
     displayName: 🚆 Restore cache for NuGet
+    enabled: false
     inputs:
       key: 'nuget | $(Agent.OS) | **/packages.lock.json,!**/bin/**,!**/obj/**'
       path: '$(NUGET_PACKAGES)'
-      cacheHitVar: 'CACHE_RESTORED'
       
   - task: DotNetCoreCLI@2
     displayName: ⛽ Dotnet restore
-    condition: and(succeeded(), ne(variables.CACHE_RESTORED, true))
     inputs:
       command: 'restore'
       projects: '**/*.csproj'
@@ -56,18 +55,8 @@ steps:
       feedsToUse: 'select'
       restoreDirectory: '$(NUGET_PACKAGES)'
       
-  #In order to have a project.assests.json a build is required.
   - task: DotNetCoreCLI@2
-    displayName: 🔨 Dotnet build - pipeline cache restored
-    condition: and(succeeded(), eq(variables.CACHE_RESTORED, true))
-    inputs:
-      command: 'build'
-      projects: '**/*.csproj'
-      arguments: '-c Release -a x64'
-      
-  - task: DotNetCoreCLI@2
-    displayName: 🔨 Dotnet build - pipeline cache not restored
-    condition: and(succeeded(), eq(variables.CACHE_RESTORED, false))
+    displayName: 🔨 Dotnet build
     inputs:
       command: 'build'
       projects: '**/*.csproj'
