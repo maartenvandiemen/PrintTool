@@ -69,6 +69,7 @@ steps:
       arguments: '--no-build --arch x64 -c Release --collect:"XPlat Code Coverage"'
       
   - task: PublishCodeCoverageResults@1
+    displayName: 🤘 Publish code coverage
     inputs:
       codeCoverageTool: 'Cobertura'
       summaryFileLocation: '$(Agent.TempDirectory)/*/coverage.cobertura.xml'
