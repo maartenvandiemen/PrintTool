@@ -24,6 +24,7 @@ Improve the pipeline:
 1. Pass a variable from Azure Keyvault
    - [Hint](https://thomasthornton.cloud/2021/06/24/storing-and-retrieving-secrets-in-azure-keyvault-with-variable-groups-in-azure-devops-pipelines)
 1. Installing the .net version is always part of the build. Skip this if it's already installed on the agent.
+   - [Hint: PerformMultiLevelLookup option doesn't work](https://learn.microsoft.com/en-us/azure/devops/pipelines/tasks/reference/use-dotnet-v2?view=azure-pipelines#inputs)
    - [Hint: list all installed dotnet sdks](https://learn.microsoft.com/en-us/dotnet/core/install/how-to-detect-installed-versions)
    - [Hint: define dynamically a variable in powershell](https://learn.microsoft.com/en-us/azure/devops/pipelines/process/variables)
    - [Hint: parse JSON from Powershell](https://techcommunity.microsoft.com/t5/core-infrastructure-and-security/parsing-json-with-powershell/ba-p/2768721)
