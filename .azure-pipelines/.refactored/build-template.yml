@@ -85,7 +85,8 @@ steps:
       zipAfterPublish: false
       modifyOutputPath: false
       
-  - task: 📤 PublishPipelineArtifact@1
+  - task: PublishPipelineArtifact@1
+    displayName: 📤 Publish artifact
     inputs:
       targetPath: '$(Build.ArtifactStagingDirectory)'
       artifactName: ${{ parameters.artifactname}}
