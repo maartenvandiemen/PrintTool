@@ -16,8 +16,6 @@ parameters:
 - name: deployableExtension
   type: string
   default: ''
-- name: pipelineResource
-  type: object
 
 stages:
 - stage: Deploy_${{parameters.stage_name}}
@@ -34,13 +32,9 @@ stages:
       runOnce:
         deploy:
           steps:
-            - download: ${{parameters.pipelineResource}}
             - ${{ each step in parameters.preDeploymentSteps }}:
               - ${{ step }}
             - task: CmdLine@2
               displayName: Execute ${{parameters.solutionName}}
               inputs:
-                ${{ if eq(parameters.pipelineResource, 'current') }}:
-                  script: $(Pipeline.Workspace)/${{parameters.solutionName}}-${{parameters.stage_name}}/${{parameters.solutionName}}${{parameters.deployableExtension}} ${{parameters.deploymentArguments}}
-                ${{ else }}:
-                  script: $(Pipeline.Workspace)/${{parameters.pipelineResource}}/${{parameters.solutionName}}-${{parameters.stage_name}}/${{parameters.solutionName}}${{parameters.deployableExtension}} ${{parameters.deploymentArguments}}
+                script: $(Pipeline.Workspace)/${{parameters.solutionName}}-${{parameters.stage_name}}/${{parameters.solutionName}}${{parameters.deployableExtension}} ${{parameters.deploymentArguments}}

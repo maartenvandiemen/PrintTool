@@ -14,10 +14,11 @@ parameters:
 
 steps:
   - powershell: Write-Host "##vso[task.setvariable variable=NUGET_PACKAGES;]$(Pipeline.Workspace)/packages"
-    displayName: set NUGET_PACKAGES env variable if not set already
+    displayName: ✒️ set NUGET_PACKAGES env variable if not set already
     condition: ne(variables['NUGET_PACKAGES'], '')
+    
   - task: PowerShell@2
-    displayName: Determine dotnet version installed
+    displayName: 🔦 Determine dotnet version installed
     inputs:
       targetType: 'inline'
       script: |
@@ -30,54 +31,52 @@ steps:
           Write-Host "##vso[task.setvariable variable=isDotNetVersionInstalled;]true"
         }
       pwsh: true
+      
   - task: UseDotNet@2
-    displayName: Install dotnet version (if required)
+    displayName: 🚧 Install dotnet version (if required)
     condition: and(succeeded(), ne(variables['isDotNetVersionInstalled'], 'true'))
     inputs:
       packageType: 'sdk'
       useGlobalJson: true
+      
   - task: Cache@2
-    displayName: 'Restore cache for NuGet'
+    displayName: 🚆 Restore cache for NuGet
     inputs:
       key: 'nuget | $(Agent.OS) | **/packages.lock.json,!**/bin/**,!**/obj/**'
       path: '$(NUGET_PACKAGES)'
-      cacheHitVar: 'CACHE_RESTORED'
+      
   - task: DotNetCoreCLI@2
-    displayName: Dotnet restore 
-    condition: and(succeeded(), ne(variables.CACHE_RESTORED, true))
+    displayName: ⛽ Dotnet restore - cache
     inputs:
       command: 'restore'
       projects: '**/*.csproj'
       restoreArguments: '--locked-mode'
       feedsToUse: 'select'
       restoreDirectory: '$(NUGET_PACKAGES)'
+      
   - task: DotNetCoreCLI@2
-    displayName: Dotnet build - pipeline cache restored
-    condition: and(succeeded(), eq(variables.CACHE_RESTORED, true))
-    inputs:
-      command: 'build'
-      projects: '**/*.csproj'
-      arguments: '-c Release -a x64'
-  - task: DotNetCoreCLI@2
-    displayName: Dotnet build - pipeline cache not restored
-    condition: and(succeeded(), ne(variables.CACHE_RESTORED, true))
+    displayName: 🔨 Dotnet build
     inputs:
       command: 'build'
       projects: '**/*.csproj'
       arguments: '--no-restore -c Release -a x64'
+      
   - task: DotNetCoreCLI@2
-    displayName: Dotnet test
+    displayName: 🚦 Dotnet test
     inputs:
       command: 'test'
       projects: '**/*Tests.csproj'
       arguments: '--no-build --arch x64 -c Release --collect:"XPlat Code Coverage"'
-  - task: PublishCodeCoverageResults@1
+  
+  - task: PublishCodeCoverageResults@2
+    displayName: 🤘 Publish code coverage
     inputs:
-      codeCoverageTool: 'Cobertura'
       summaryFileLocation: '$(Agent.TempDirectory)/*/coverage.cobertura.xml'
+      pathToSources: '$(Build.SourcesDirectory)'
       failIfCoverageEmpty: true
+
   - task: DotNetCoreCLI@2
-    displayName: Dotnet publish
+    displayName: 🏁 Dotnet publish
     condition: and(succeeded(), ne('${{ parameters.projectToPublish }}', ''))
     inputs:
       command: 'publish'
@@ -86,7 +85,9 @@ steps:
       arguments: '-a x64 --output $(Build.ArtifactStagingDirectory) --no-restore -c Release --self-contained -p:PublishSingleFile=true -p:PublishTrimmed=true'
       zipAfterPublish: false
       modifyOutputPath: false
+      
   - task: PublishPipelineArtifact@1
+    displayName: 📤 Publish artifact
     inputs:
       targetPath: '$(Build.ArtifactStagingDirectory)'
       artifactName: ${{ parameters.artifactname}}
