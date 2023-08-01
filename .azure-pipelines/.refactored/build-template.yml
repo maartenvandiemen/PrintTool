@@ -44,29 +44,15 @@ steps:
     inputs:
       key: 'nuget | $(Agent.OS) | **/packages.lock.json,!**/bin/**,!**/obj/**'
       path: '$(NUGET_PACKAGES)'
-      cacheHitVar: 'CACHE_RESTORED'
       
   - task: DotNetCoreCLI@2
     displayName: ⛽ Dotnet restore - cache
-    condition: and(succeeded(), eq(variables.CACHE_RESTORED, true))
-    inputs:
-      command: 'restore'
-      projects: '**/*.csproj'
-      restoreArguments: '--locked-mode'
-      feedsToUse: 'select'
-      includeNuGetOrg: false
-      restoreDirectory: '$(NUGET_PACKAGES)'
-  
-  - task: DotNetCoreCLI@2
-    displayName: ⛽ Dotnet restore - cache miss
-    condition: and(succeeded(), eq(variables.CACHE_RESTORED, false))
     inputs:
       command: 'restore'
       projects: '**/*.csproj'
       restoreArguments: '--locked-mode'
       feedsToUse: 'select'
       restoreDirectory: '$(NUGET_PACKAGES)'
-      includeNuGetOrg: true
       
   - task: DotNetCoreCLI@2
     displayName: 🔨 Dotnet build
