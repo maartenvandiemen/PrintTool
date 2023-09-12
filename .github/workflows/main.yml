@@ -25,7 +25,7 @@ jobs:
   build_windows:
     runs-on: windows-latest
     steps:  
-    - uses: actions/checkout@v3    
+    - uses: actions/checkout@v4    
     - uses: actions/setup-dotnet@v3
       with: 
         global-json-file: global.json
@@ -40,7 +40,7 @@ jobs:
   build_linux:
     runs-on: ubuntu-latest
     steps:  
-    - uses: actions/checkout@v3    
+    - uses: actions/checkout@v4    
     - uses: actions/setup-dotnet@v3
     - run: dotnet restore --locked-mode
     - run: dotnet build ${{github.workspace}}/PrintTool/PrintTool.csproj --no-restore -c Release -a x64
