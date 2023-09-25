@@ -4,7 +4,7 @@
     "config:recommended"
   ],
   "azure-pipelines": {
-    "fileMatch": [ ".*-template?.*\\.ya?ml$" ],
+    "fileMatch": [ ".*-template?.*\\.ya?ml" ],
     "enabled": true
   },
   "packageRules": [ 
