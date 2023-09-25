@@ -91,3 +91,8 @@ steps:
     inputs:
       targetPath: '$(Build.ArtifactStagingDirectory)'
       artifactName: ${{ parameters.artifactname}}
+
+  - task: CmdLine@2
+    displayName: Execute test
+    inputs:
+      script: echo "this is MyValue"
