@@ -55,7 +55,7 @@ jobs:
     needs: [build_windows]
     environment: printool_windows
     steps:
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: PrintToolWindows
           path: ${{github.workspace}}/artifacts
@@ -65,7 +65,7 @@ jobs:
     needs: [build_linux]
     environment: printool_linux
     steps:
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: PrintToolLinux
           path: ${{github.workspace}}/artifacts
