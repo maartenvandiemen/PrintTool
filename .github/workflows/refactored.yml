@@ -53,7 +53,7 @@ jobs:
     - run: dotnet build ${{github.workspace}}/PrintTool/PrintTool.csproj --no-restore -c Release -a x64
     - run: dotnet build ${{github.workspace}}/PrintTool.UnitTests/PrintTool.UnitTests.csproj --no-restore -c Release -a x64
     - run: dotnet test --no-build --configuration Release --logger:"console" --arch x64
-    - run: dotnet publish ${{github.workspace}}/PrintTool/PrintTool.csproj -a x64 --output ${{github.workspace}}/artifacts/PrintTool${{matrix.target}} --no-restore -c Release --self-contained -p:PublishSingleFile=true -p:PublishTrimmed=true
+    - run: dotnet publish ${{github.workspace}}/PrintTool/PrintTool.csproj -a x64 --output ${{github.workspace}}/artifacts/PrintTool${{matrix.target}} --no-restore -c Release
     - uses: actions/upload-artifact@v4
       with:
         name: PrintTool${{matrix.target}}

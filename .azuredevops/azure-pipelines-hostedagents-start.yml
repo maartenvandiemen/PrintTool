@@ -58,7 +58,7 @@ stages:
         command: 'publish'
         publishWebProjects: false
         projects: '**/PrintTool.csproj'
-        arguments: '-a x64 --output $(Build.ArtifactStagingDirectory) --no-restore -c Release --self-contained -p:PublishSingleFile=true -p:PublishTrimmed=true'
+        arguments: '-a x64 --output $(Build.ArtifactStagingDirectory) --no-restore -c Release'
         zipAfterPublish: false
         modifyOutputPath: false
     - task: PublishPipelineArtifact@1
@@ -94,7 +94,7 @@ stages:
         command: 'publish'
         publishWebProjects: false
         projects: '**/PrintTool.csproj'
-        arguments: '-a x64 -p:PublishSingleFile=true -p:PublishTrimmed=true --self-contained true --output $(Build.ArtifactStagingDirectory) --no-restore --source $(Pipeline.Workspace)/packages -c Release'
+        arguments: '-a x64 --output $(Build.ArtifactStagingDirectory) --no-restore -c Release'
         zipAfterPublish: false
         modifyOutputPath: false
     - task: PublishPipelineArtifact@1
