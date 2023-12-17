@@ -82,7 +82,7 @@ steps:
       command: 'publish'
       publishWebProjects: false
       projects: ${{parameters.projectToPublish}}
-      arguments: '-a x64 --output $(Build.ArtifactStagingDirectory) --no-restore -c Release --self-contained -p:PublishSingleFile=true -p:PublishTrimmed=true'
+      arguments: '-a x64 --output $(Build.ArtifactStagingDirectory) --no-restore -c Release'
       zipAfterPublish: false
       modifyOutputPath: false
       
