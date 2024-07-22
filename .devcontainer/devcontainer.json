@@ -4,7 +4,7 @@
 	"name": "C# (.NET)",
 	"image": "mcr.microsoft.com/devcontainers/dotnet:0-7.0",
 	"features": {
-		"ghcr.io/devcontainers/features/dotnet:1": {}
+		"ghcr.io/devcontainers/features/dotnet:2": {}
 	},
 	"postCreateCommand": "dotnet restore",
 	// Features to add to the dev container. More info: https://containers.dev/features.
